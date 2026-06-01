@@ -5562,7 +5562,24 @@ window.parseMarkdown = parseMarkdown;
 buildVolLists();
 buildTimeline();
 initScans();
-loadVolume(JOURNAL_VOLUMES[0].id);
+// Pre-populate the reader with the foreword but stay on the Home panel
+(function() {
+  var v = JOURNAL_VOLUMES[0];
+  currentVolumeId = v.id;
+  var el = document.getElementById('readerVolTitle');
+  if (el) el.textContent = 'The Naval Journal of H.N. Lake';
+  el = document.getElementById('readerMainTitle');
+  if (el) el.textContent = v.title;
+  el = document.getElementById('readerSubtitle');
+  if (el) el.textContent = v.subtitle;
+  el = document.getElementById('readerDateRange');
+  if (el) el.textContent = v.dateRange;
+  el = document.getElementById('readerContent');
+  if (el) el.innerHTML = parseMarkdown(v.content);
+  // Mark first vol button active
+  var btns = document.querySelectorAll('.vol-btn');
+  if (btns[0]) btns[0].classList.add('active');
+})();
 
 })();
 </script>
