@@ -5249,11 +5249,23 @@ function initMap() {
     const popupHtml =
       '<strong style="color:#1a2744;font-size:0.95rem;">' + loc.name + '</strong>' +
       '<br><span style="font-size:0.82rem;color:#5a5a5a;font-style:italic;">' + loc.note + '</span>' +
-      '<br><button onclick="window._goToVol(\''+loc.vol+'\',\''+loc.volLabel+'\')" ' +
+      '<br><button class="map-journal-btn" data-vol="' + loc.vol + '" data-label="' + loc.volLabel + '" ' +
       'style="margin-top:8px;width:100%;background:#1a2744;color:#fff;border:none;padding:6px 10px;' +
       'border-radius:3px;cursor:pointer;font-family:Georgia,serif;font-size:0.82rem;">' +
-      '&#128214; Read ' + loc.volLabel + ' &rarr;</button>';
+      '&#128214; Read ' + loc.volLabel + ' →</button>';
     marker.bindPopup(popupHtml, { maxWidth: 240 });
+    marker.on('popupopen', function(e) {
+      var btn = e.popup.getElement().querySelector('.map-journal-btn');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          var volId = btn.getAttribute('data-vol');
+          var volLabel = btn.getAttribute('data-label');
+          marker.closePopup();
+          if (window.showPanel) window.showPanel('journal');
+          if (window.loadVolume) window.loadVolume(volId);
+        });
+      }
+    });
     marker.addTo(map);
     bounds.push([loc.lat, loc.lng]);
   });
@@ -5290,7 +5302,7 @@ function initScans() {
     btn.className = 'scans-vol-btn';
     btn.textContent = v.label;
     btn.addEventListener('click', () => {
-      if (typeof JOURNAL_SCANS === 'undefined') {
+      if (!_scansData) {
         loadScansData(() => openScanVolume(v.id, btn));
       } else {
         openScanVolume(v.id, btn);
@@ -5306,19 +5318,25 @@ function initScans() {
   document.getElementById('scanNext2').addEventListener('click', () => changeScanPage(1));
 }
 
+let _scansData = null;
 function loadScansData(callback) {
-  if (typeof JOURNAL_SCANS !== 'undefined') { callback(); return; }
-  document.getElementById('scansLoading').style.display = 'block';
-  const s = document.createElement('script');
-  s.src = 'scans-data.js';
-  s.onload = () => {
-    document.getElementById('scansLoading').style.display = 'none';
-    callback();
-  };
-  s.onerror = () => {
-    document.getElementById('scansLoading').textContent = 'Could not load scans. Make sure scans-data.js is in the same folder.';
-  };
-  document.head.appendChild(s);
+  if (_scansData) { callback(); return; }
+  const loadingEl = document.getElementById('scansLoading');
+  loadingEl.textContent = 'Loading scans\u2026 (this may take a moment)';
+  loadingEl.style.display = 'block';
+  fetch('scans-data.json')
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(data => {
+      _scansData = data;
+      loadingEl.style.display = 'none';
+      callback();
+    })
+    .catch(err => {
+      loadingEl.textContent = 'Could not load scans (' + err.message + '). Make sure scans-data.json is uploaded to GitHub alongside index.html.';
+    });
 }
 
 function openScanVolume(volId, btn) {
@@ -5331,15 +5349,15 @@ function openScanVolume(volId, btn) {
 }
 
 function changeScanPage(delta) {
-  if (!currentScanVolume || typeof JOURNAL_SCANS === 'undefined') return;
-  const pages = JOURNAL_SCANS[currentScanVolume];
+  if (!currentScanVolume || !_scansData) return;
+  const pages = _scansData[currentScanVolume];
   currentScanPage = Math.max(0, Math.min(pages.length - 1, currentScanPage + delta));
   renderScanPage();
 }
 
 function renderScanPage() {
-  if (!currentScanVolume || typeof JOURNAL_SCANS === 'undefined') return;
-  const pages = JOURNAL_SCANS[currentScanVolume];
+  if (!currentScanVolume || !_scansData) return;
+  const pages = _scansData[currentScanVolume];
   const total = pages.length;
   const n = currentScanPage;
   const img = document.getElementById('scansImg');
