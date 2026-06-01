@@ -5324,10 +5324,17 @@ function loadScansData(callback) {
   const loadingEl = document.getElementById('scansLoading');
   loadingEl.textContent = 'Loading scans\u2026 (this may take a moment)';
   loadingEl.style.display = 'block';
-  fetch('scans-data.json')
+  fetch('scans-data.js')
     .then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' — make sure scans-data.js is uploaded to GitHub');
+      return r.text();
+    })
+    .then(txt => {
+      // Strip the JS variable declaration wrapper, leaving pure JSON
+      txt = txt.trim();
+      if (txt.startsWith('const JOURNAL_SCANS = ')) txt = txt.slice(22);
+      if (txt.endsWith(';')) txt = txt.slice(0, -1);
+      return JSON.parse(txt);
     })
     .then(data => {
       _scansData = data;
