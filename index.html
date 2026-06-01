@@ -5197,18 +5197,18 @@ function buildTimeline() {
 // MAP
 // -------------------------------------------------------
 const MAP_LOCATIONS = [
-  { name: 'South Queensferry',    lat: 55.990, lng: -3.396,  note: 'Home anchorage, Firth of Forth — base for much of 1914',        vol: 'vol01', volLabel: 'Volume 1' },
-  { name: 'North Berwick',        lat: 56.057, lng: -2.718,  note: 'Favourite golf destination, spring 1914',                        vol: 'vol02', volLabel: 'Volume 2' },
-  { name: 'Portland',             lat: 50.566, lng: -2.434,  note: 'Fleet Review, July 1914 — just before war was declared',         vol: 'vol04', volLabel: 'Volume 4' },
-  { name: 'Devonport / Plymouth', lat: 50.370, lng: -4.142,  note: 'Western approaches base',                                        vol: 'vol01', volLabel: 'Volume 1' },
-  { name: 'Rosyth',               lat: 56.022, lng: -3.441,  note: 'Grand Fleet base from late 1914 — Neville\'s home for months', vol: 'vol09', volLabel: 'Volume 9' },
-  { name: 'Cromarty Firth',       lat: 57.679, lng: -4.031,  note: 'Northern patrol base, summer–autumn 1914',                       vol: 'vol05', volLabel: 'Volume 5' },
-  { name: 'Scapa Flow',           lat: 58.880, lng: -3.010,  note: 'Grand Fleet HQ — where the fleet gathered for war',              vol: 'vol04', volLabel: 'Volume 4' },
+  { name: 'South Queensferry',    lat: 55.990, lng: -3.396,  note: 'Home anchorage, Firth of Forth — base for much of 1914',        vol: 'vol1', volLabel: 'Volume 1' },
+  { name: 'North Berwick',        lat: 56.057, lng: -2.718,  note: 'Favourite golf destination, spring 1914',                        vol: 'vol2', volLabel: 'Volume 2' },
+  { name: 'Portland',             lat: 50.566, lng: -2.434,  note: 'Fleet Review, July 1914 — just before war was declared',         vol: 'vol4', volLabel: 'Volume 4' },
+  { name: 'Devonport / Plymouth', lat: 50.370, lng: -4.142,  note: 'Western approaches base',                                        vol: 'vol1', volLabel: 'Volume 1' },
+  { name: 'Rosyth',               lat: 56.022, lng: -3.441,  note: 'Grand Fleet base from late 1914 — Neville\'s home for months', vol: 'vol9', volLabel: 'Volume 9' },
+  { name: 'Cromarty Firth',       lat: 57.679, lng: -4.031,  note: 'Northern patrol base, summer–autumn 1914',                       vol: 'vol5', volLabel: 'Volume 5' },
+  { name: 'Scapa Flow',           lat: 58.880, lng: -3.010,  note: 'Grand Fleet HQ — where the fleet gathered for war',              vol: 'vol4', volLabel: 'Volume 4' },
   { name: 'Scarborough',          lat: 54.280, lng: -0.399,  note: 'German coastal bombardment, Dec 1914 — Grand Fleet almost intercepted', vol: 'vol10', volLabel: 'Volume 10' },
   { name: 'Hartlepool',           lat: 54.686, lng: -1.212,  note: 'German coastal bombardment, Dec 1914',                           vol: 'vol10', volLabel: 'Volume 10' },
-  { name: 'Heligoland Bight',     lat: 54.183, lng:  7.889,  note: 'Battle of Heligoland Bight, Aug 1914 — first naval battle of WWI', vol: 'vol07', volLabel: 'Volume 7' },
-  { name: 'Christiania (Oslo)',   lat: 59.913, lng: 10.752,  note: 'Fleet visit, June 1914 — cricket and social dinners ashore',     vol: 'vol03', volLabel: 'Volume 3' },
-  { name: 'Copenhagen',           lat: 55.676, lng: 12.568,  note: 'Fleet visit, June 1914 — cricket match against Denmark',         vol: 'vol03', volLabel: 'Volume 3' },
+  { name: 'Heligoland Bight',     lat: 54.183, lng:  7.889,  note: 'Battle of Heligoland Bight, Aug 1914 — first naval battle of WWI', vol: 'vol7', volLabel: 'Volume 7' },
+  { name: 'Christiania (Oslo)',   lat: 59.913, lng: 10.752,  note: 'Fleet visit, June 1914 — cricket and social dinners ashore',     vol: 'vol3', volLabel: 'Volume 3' },
+  { name: 'Copenhagen',           lat: 55.676, lng: 12.568,  note: 'Fleet visit, June 1914 — cricket match against Denmark',         vol: 'vol3', volLabel: 'Volume 3' },
   { name: 'Dogger Bank',          lat: 54.830, lng:  2.000,  note: 'Battle of Dogger Bank, Jan 1915 — SMS Bl\u00fccher sunk',       vol: 'vol11', volLabel: 'Volume 11' },
 ];
 
@@ -5265,13 +5265,58 @@ function initMap() {
 
   // Delegated click handler for all "Read Journal" popup buttons
   document.getElementById('the-map').addEventListener('click', function(e) {
-    var btn = e.target.closest ? e.target.closest('.map-journal-btn') : null;
-    if (!btn) return;
-    var volId = btn.getAttribute('data-vol');
+    var target = e.target;
+    // Walk up to find the button (handles clicks on text inside button)
+    while (target && target !== document) {
+      if (target.classList && target.classList.contains('map-journal-btn')) break;
+      target = target.parentNode;
+    }
+    if (!target || !target.classList || !target.classList.contains('map-journal-btn')) return;
+
+    var volId = target.getAttribute('data-vol');
     if (!volId) return;
+
+    // Find the volume directly from global JOURNAL_VOLUMES
+    var vol = null;
+    for (var i = 0; i < JOURNAL_VOLUMES.length; i++) {
+      if (JOURNAL_VOLUMES[i].id === volId) { vol = JOURNAL_VOLUMES[i]; break; }
+    }
+    if (!vol) { console.warn('Map nav: volume not found for id:', volId); return; }
+
     map.closePopup();
-    window.showPanel('journal');
-    window.loadVolume(volId);
+
+    // Switch to journal panel (direct DOM - no IIFE dependency)
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    var journalPanel = document.getElementById('panel-journal');
+    if (journalPanel) journalPanel.classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset && b.dataset.panel === 'journal');
+    });
+
+    // Update sidebar vol buttons
+    document.querySelectorAll('.vol-btn, .drawer-vol-btn').forEach(function(b) { b.classList.remove('active'); });
+    var allVolBtns = document.querySelectorAll('.vol-btn');
+    for (var j = 0; j < allVolBtns.length; j++) {
+      if (JOURNAL_VOLUMES[j] && JOURNAL_VOLUMES[j].id === volId) allVolBtns[j].classList.add('active');
+    }
+
+    // Update reader header
+    var el = document.getElementById('readerVolTitle');
+    if (el) el.textContent = 'The Naval Journal of H.N. Lake';
+    el = document.getElementById('readerMainTitle');
+    if (el) el.textContent = vol.title;
+    el = document.getElementById('readerSubtitle');
+    if (el) el.textContent = vol.subtitle;
+    el = document.getElementById('readerDateRange');
+    if (el) el.textContent = vol.dateRange;
+
+    // Render content using global parseMarkdown
+    var contentEl = document.getElementById('readerContent');
+    if (contentEl && window.parseMarkdown) {
+      contentEl.innerHTML = window.parseMarkdown(vol.content);
+    }
+
+    window.scrollTo(0, 0);
   });
 }
 
@@ -5381,6 +5426,7 @@ function renderScanPage() {
 // Expose navigation functions globally for map popups
 window.loadVolume = loadVolume;
 window.showPanel = showPanel;
+window.parseMarkdown = parseMarkdown;
 // -------------------------------------------------------
 // INIT
 // -------------------------------------------------------
