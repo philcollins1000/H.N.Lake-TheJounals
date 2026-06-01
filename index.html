@@ -1012,6 +1012,33 @@ body {
 <script>
 const JOURNAL_VOLUMES = [
   {
+    id: "note",
+    title: "A Note on Transcription",
+    dateRange: "",
+    subtitle: "On the method and challenge",
+    content: `## A Note on Transcription
+
+These journals were written in Neville Lake's own hand — a flowing Edwardian naval cursive that is, in places, extremely difficult to decipher. Words run together, ink has faded, letters bleed through from the reverse of the page, and the writing understandably becomes more hurried during moments of high drama. The handwriting of a young naval officer dashing off his journal by lamplight at the end of a watch is rather different from the careful copperplate of a formal document.
+
+To produce this transcription, the original scanned pages were processed through two rounds of AI-assisted analysis — each independently reading the manuscript and attempting to resolve uncertain passages. Where both readings agreed, confidence in the transcription is high. Where they diverged, or where neither could resolve a passage with confidence, the uncertain word or phrase is marked **[?]**. Wholly illegible passages are marked **[unclear passage]**.
+
+An Edwardian scholar — or someone deeply familiar with the handwriting of this period — would undoubtedly be able to improve on certain passages. What we are confident of, however, is that the content, emotion and nuance of the journal has been captured. Neville's voice, his frustrations, his humour, his excitement and his private reflections on the war come through vividly, even where an individual word resists decipherment.
+
+**On the challenge of the handwriting.** Neville writes in a style typical of his class and period, but certain letterforms present particular difficulties. "Thursday" frequently reads in the scan as "Jursday" or "Tursday"; "Wednesday" appears as "Wednessday" or "Wrsday"; the long-s, used in Edwardian handwriting, is easily confused with an 'f'. Numbers are often ambiguous — '1' and '7', '9' and '4' can be nearly identical in his hand. Place names and proper nouns, especially during the Scandinavian visit in Volume 3, remain the most uncertain passages in the whole journal.
+
+**On abbreviations and naval terminology.** Throughout the journal, Neville uses the abbreviations and shorthand of the Royal Navy of 1914. The most common are: *BCS* (Battle Cruiser Squadron), *BS* (Battle Squadron), *CS* (Cruiser Squadron), *LCS* (Light Cruiser Squadron), *OOW* or *OOTs* (Officer of the Watch), *C-in-C* (Commander-in-Chief). "Pip" in Volume 4 is a naval signal, not a fruit.
+
+**How much work the transcription involved** is perhaps best illustrated by a direct comparison. Here is a passage from the original scan of Volume 8, reproduced as closely as possible to what the handwriting actually looks like to an automated reader:
+
+> *"A day which I shak haver forget, & om which I Hah always look back wik a eling of hear haukhuleres to Providumer… Absolulity flat calm, not a brath of air, bright Sunshine Fohowed aß bech a most forgrows sunset Sprut the four hoon on deck Ashft in beafternoon…"*
+
+And here is the same passage as transcribed in this volume:
+
+> *"A day which I shall never forget, and one on which I shall always look back with a feeling of great thankfulness to Providence… Absolutely flat calm, not a breath of air, bright sunshine followed afterwards by a most gorgeous sunset. Spent the forenoon on deck. Slept in the afternoon…"*
+
+This is Volume 8, 9th October 1914 — the day two German torpedoes narrowly missed HMS Antrim.`
+  },
+    {
     id: "foreword",
     title: "Contents & Foreword",
     dateRange: "February 1914",
@@ -1068,31 +1095,6 @@ const JOURNAL_VOLUMES = [
 
 ---
 
-A Note on Transcription
-
----
-
-## A Note on Transcription
-
-These journals were written in Neville Lake's own hand — a flowing Edwardian naval cursive that is, in places, extremely difficult to decipher. Words run together, ink has faded, letters bleed through from the reverse of the page, and the writing understandably becomes more hurried during moments of high drama. The handwriting of a young naval officer dashing off his journal by lamplight at the end of a watch is rather different from the careful copperplate of a formal document.
-
-To produce this transcription, the original scanned pages were processed through two rounds of AI-assisted analysis — each independently reading the manuscript and attempting to resolve uncertain passages. Where both readings agreed, confidence in the transcription is high. Where they diverged, or where neither could resolve a passage with confidence, the uncertain word or phrase is marked **[?]**. Wholly illegible passages are marked **[unclear passage]**.
-
-An Edwardian scholar — or someone deeply familiar with the handwriting of this period — would undoubtedly be able to improve on certain passages. What we are confident of, however, is that the content, emotion and nuance of the journal has been captured. Neville's voice, his frustrations, his humour, his excitement and his private reflections on the war come through vividly, even where an individual word resists decipherment.
-
-**On the challenge of the handwriting.** Neville writes in a style typical of his class and period, but certain letterforms present particular difficulties. "Thursday" frequently reads in the scan as "Jursday" or "Tursday"; "Wednesday" appears as "Wednessday" or "Wrsday"; the long-s, used in Edwardian handwriting, is easily confused with an 'f'. Numbers are often ambiguous — '1' and '7', '9' and '4' can be nearly identical in his hand. Place names and proper nouns, especially during the Scandinavian visit in Volume 3, remain the most uncertain passages in the whole journal.
-
-**On abbreviations and naval terminology.** Throughout the journal, Neville uses the abbreviations and shorthand of the Royal Navy of 1914. The most common are: *BCS* (Battle Cruiser Squadron), *BS* (Battle Squadron), *CS* (Cruiser Squadron), *LCS* (Light Cruiser Squadron), *OOW* or *OOTs* (Officer of the Watch), *C-in-C* (Commander-in-Chief). "Pip" in Volume 4 is a naval signal, not a fruit.
-
-**How much work the transcription involved** is perhaps best illustrated by a direct comparison. Here is a passage from the original scan of Volume 8, reproduced as closely as possible to what the handwriting actually looks like to an automated reader:
-
-> *"A day which I shak haver forget, & om which I Hah always look back wik a eling of hear haukhuleres to Providumer… Absolulity flat calm, not a brath of air, bright Sunshine Fohowed aß bech a most forgrows sunset Sprut the four hoon on deck Ashft in beafternoon…"*
-
-And here is the same passage as transcribed in this volume:
-
-> *"A day which I shall never forget, and one on which I shall always look back with a feeling of great thankfulness to Providence… Absolutely flat calm, not a breath of air, bright sunshine followed afterwards by a most gorgeous sunset. Spent the forenoon on deck. Slept in the afternoon…"*
-
-This is Volume 8, 9th October 1914 — the day two German torpedoes narrowly missed HMS Antrim.
 
 ---
 
@@ -4033,6 +4035,13 @@ const TIMELINE_EVENTS = [
     side: 'right'
   },
   {
+    date: '9 August 1914',
+    title: 'First U-Boat Sunk — U-15',
+    desc: 'HMS Birmingham rams and sinks U-15 — the first German submarine lost in the war. Neville copies the Scotsman\'s account into his journal and proposes his own scheme for hunting submarines with armed picket boats.',
+    type: 'battle',
+    side: 'left'
+  },
+  {
     date: '28 August 1914',
     title: 'Battle of Heligoland Bight',
     desc: 'First major naval battle of the war. British cruisers and destroyers engage the German fleet in the Bight.',
@@ -4040,9 +4049,9 @@ const TIMELINE_EVENTS = [
     side: 'left'
   },
   {
-    date: '27 August 1914',
+    date: '1 September 1914',
     title: 'Collision at Sea',
-    desc: 'HMS Antrim involved in a collision. Neville describes the moment in vivid detail, with diagram.',
+    desc: 'During a North Sea sweep, HMS Antrim collides with a Norwegian trawler. Neville\'s account pins the blame squarely on the Captain\'s indecision, reproduced with a hand-drawn diagram.',
     type: 'wartime',
     side: 'right'
   },
@@ -4061,6 +4070,27 @@ const TIMELINE_EVENTS = [
     side: 'right'
   },
   {
+    date: '27 October 1914',
+    title: 'HMS Audacious Lost',
+    desc: 'Neville hears HMS Audacious calling for immediate assistance — she has struck a mine. Taken in tow by SS Liverpool, her loss is kept secret by the Admiralty. "It was no use hiding the fact that first genuine anxiety was felt."',
+    type: 'wartime',
+    side: 'left'
+  },
+  {
+    date: '1 November 1914',
+    title: 'Battle of Coronel',
+    desc: 'HMS Good Hope and HMS Monmouth are lost fighting Admiral von Spee\'s squadron off the Chilean coast. Neville writes: "It serves us right if we allow an inferior English force to have to take on a superior German force."',
+    type: 'battle',
+    side: 'right'
+  },
+  {
+    date: '8 December 1914',
+    title: 'Battle of the Falkland Islands',
+    desc: 'News arrives that Sturdee has sunk Scharnhorst, Gneisenau, Leipzig and Nürnberg — revenge for Coronel in five weeks. "Everyone was too delighted for words; it was so quick."',
+    type: 'battle',
+    side: 'left'
+  },
+  {
     date: '16 December 1914',
     title: 'German Raid on Scarborough & Hartlepool',
     desc: 'German battlecruisers bombard the English coast. The Grand Fleet races to intercept but fog and signals failures allow the enemy to escape.',
@@ -4072,6 +4102,13 @@ const TIMELINE_EVENTS = [
     title: 'Battle of Dogger Bank',
     desc: 'HMS Lion leads the pursuit. SMS Blücher is sunk. Neville visits the damaged ships: "Speed bore quickly worked up to 29 knots."',
     type: 'battle',
+    side: 'right'
+  },
+  {
+    date: '27 February 1915',
+    title: 'King George V Visits HMS Antrim',
+    desc: 'An informal inspection at Rosyth. The King goes below to find half the men still washing, everything in an appalling state. "It was a most informal visit and for that reason I think he was both pleased and amused."',
+    type: 'wartime',
     side: 'right'
   },
   {
@@ -4114,6 +4151,10 @@ const MAP_LOCATIONS = [
   { name: 'Heligoland Bight',     lat: 54.183, lng:  7.889,  note: 'Battle of Heligoland Bight, Aug 1914 — first naval battle of WWI', vol: 'vol7', volLabel: 'Volume 7' },
   { name: 'Christiania (Oslo)',   lat: 59.913, lng: 10.752,  note: 'Fleet visit, June 1914 — cricket and social dinners ashore',     vol: 'vol3', volLabel: 'Volume 3' },
   { name: 'Copenhagen',           lat: 55.676, lng: 12.568,  note: 'Fleet visit, June 1914 — cricket match against Denmark',         vol: 'vol3', volLabel: 'Volume 3' },
+  { name: 'Berehaven (Bantry Bay)', lat: 51.650, lng: -9.880,  note: 'Spring exercises, cricket and picnics ashore, May 1914',            vol: 'vol3', volLabel: 'Volume 3' },
+  { name: 'Stavanger',              lat: 58.970, lng:  5.730,  note: 'Fleet "raid", Aug 1914 — found only a Norwegian destroyer',         vol: 'vol5', volLabel: 'Volume 5' },
+  { name: 'Kirkwall, Orkney',       lat: 58.981, lng: -2.960,  note: 'Prize crew destination — SS Canadia brought here, Nov 1914',         vol: 'vol9', volLabel: 'Volume 9' },
+  { name: 'Orra Firth (Shetlands)', lat: 60.370, lng: -1.120,  note: 'Desolate coaling base, Oct–Nov 1914 — "nothing to stop submarines entering"', vol: 'vol8', volLabel: 'Volume 8' },
   { name: 'Dogger Bank',          lat: 54.830, lng:  2.000,  note: 'Battle of Dogger Bank, Jan 1915 — SMS Bl\u00fccher sunk',       vol: 'vol11', volLabel: 'Volume 11' },
 ];
 
@@ -4142,7 +4183,7 @@ function initMap() {
   });
 
   const battleLocations = new Set(['Heligoland Bight', 'Dogger Bank', 'Scarborough', 'Hartlepool']);
-  const visitLocations = new Set(['Christiania (Oslo)', 'Copenhagen']);
+  const visitLocations = new Set(['Christiania (Oslo)', 'Copenhagen', 'Berehaven (Bantry Bay)', 'Stavanger', 'Kirkwall, Orkney']);
 
   const bounds = [];
   MAP_LOCATIONS.forEach(loc => {
@@ -4234,6 +4275,7 @@ let currentScanVolume = null;
 let currentScanPage = 0;
 
 const SCAN_VOLUME_META = [
+  { id: 'note', label: 'Transcription Note' },
   { id: 'foreword', label: 'Foreword' },
   { id: 'vol01', label: 'Vol 1' }, { id: 'vol02', label: 'Vol 2' },
   { id: 'vol03', label: 'Vol 3' }, { id: 'vol04', label: 'Vol 4' },
