@@ -5269,15 +5269,9 @@ function initMap() {
     if (!btn) return;
     var volId = btn.getAttribute('data-vol');
     if (!volId) return;
-    // Close the popup
     map.closePopup();
-    // Switch panel then load volume with a small delay to let the panel switch settle
-    setTimeout(function() {
-      if (window.showPanel) window.showPanel('journal');
-      setTimeout(function() {
-        if (window.loadVolume) window.loadVolume(volId);
-      }, 50);
-    }, 50);
+    window.showPanel('journal');
+    window.loadVolume(volId);
   });
 }
 
