@@ -4686,7 +4686,7 @@ function inlineMarkdown(text) {
   // [?] uncertain reading
   text = text.replace(/\[\?\]/g, '<span class="uncertain">[?]</span>');
   // inline code (rare but possible)
-  text = text.replace(/`([^`]+?)`/g, '<code>$1</code>');
+  text = text.replace(/\x60([^\x60]+?)\x60/g, '<code>$1</code>');
   // non-breaking space entity
   text = text.replace(/&amp;nbsp;/g, '&nbsp;');
   return text;
